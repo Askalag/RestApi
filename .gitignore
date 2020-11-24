@@ -28,5 +28,9 @@ msbuild.log
 msbuild.err
 msbuild.wrn
 
+#Rider
+.idea
+.idea/
+
 # Visual Studio 2015
 .vs/
