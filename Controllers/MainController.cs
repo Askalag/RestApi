@@ -14,13 +14,11 @@ namespace RestApi.Controllers
     [Route("api")]
     public class MainController : ControllerBase
     {
-        private ICarRepository _carRepository;
-        private AppDbContext _context;
+        private readonly ICarRepository _carRepository;
 
-        public MainController(ICarRepository carRepository, AppDbContext context)
+        public MainController(ICarRepository carRepository)
         {
             _carRepository = carRepository;
-            _context = context;
         }
         
         [HttpGet("hello")]
