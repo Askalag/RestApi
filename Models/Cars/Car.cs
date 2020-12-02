@@ -14,7 +14,10 @@ namespace RestApi.Models.Cars
         public Model Model { get; set; }
         public string Description { get; set; }
         public DateTime Created { get; set; }
-        
+        public BaseState State { get; set; }
+
         public ICollection<Inspection> Inspections { get; set; }
+        
+        public Car() {}
     }
 }

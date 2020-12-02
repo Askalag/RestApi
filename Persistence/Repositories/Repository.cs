@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using RestApi.Persistence.Repositories;
 
-namespace RestApi.Repositories
+namespace RestApi.Persistence.Repositories
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
-        private DbContext Context { get; set; }
+        private AppDbContext Context { get; set; }
 
-        public Repository(DbContext context)
+        protected Repository(AppDbContext context)
         {
             Context = context;
         }
@@ -47,6 +48,11 @@ namespace RestApi.Repositories
         public void RemoveRange(IEnumerable<TEntity> entities)
         {
             Context.Set<TEntity>().RemoveRange(entities);
+        }
+
+        public void SaveChanges()
+        {
+            Context.SaveChanges();
         }
     }
 }

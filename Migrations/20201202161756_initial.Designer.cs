@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using RestApi.Repositories;
+using RestApi.Persistence;
 
 namespace RestApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20201123175224_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20201202161756_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -37,12 +37,38 @@ namespace RestApi.Migrations
                     b.Property<int>("Mark")
                         .HasColumnType("int");
 
-                    b.Property<int>("Model")
+                    b.Property<int?>("ModelId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("State")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ModelId");
+
                     b.ToTable("Cars", "is01");
+                });
+
+            modelBuilder.Entity("RestApi.Models.Cars.Model", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("State")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Models", "is01");
                 });
 
             modelBuilder.Entity("RestApi.Models.Inspection", b =>
@@ -61,11 +87,23 @@ namespace RestApi.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("State")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CarId");
 
                     b.ToTable("Inspections", "is01");
+                });
+
+            modelBuilder.Entity("RestApi.Models.Cars.Car", b =>
+                {
+                    b.HasOne("RestApi.Models.Cars.Model", "Model")
+                        .WithMany()
+                        .HasForeignKey("ModelId");
+
+                    b.Navigation("Model");
                 });
 
             modelBuilder.Entity("RestApi.Models.Inspection", b =>

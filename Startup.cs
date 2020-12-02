@@ -11,7 +11,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using RestApi.Repositories;
+using RestApi.Persistence;
+using RestApi.Persistence.Repositories;
+using RestApi.Persistence.Repositories;
+using RestApi.Services;
 
 namespace RestApi
 {
@@ -28,10 +31,15 @@ namespace RestApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            
             services.AddDbContext<AppDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("devDb1"));
             });
+
+            services.AddSingleton<ICarService, CarService>();
+
+            services.AddScoped<ICarRepository, CarRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,7 +1,7 @@
 ﻿using RestApi.Models;
 using RestApi.Models.Cars;
 
-namespace RestApi.Repositories
+namespace RestApi.Persistence
 {
     public interface IUnitOfWork
     {

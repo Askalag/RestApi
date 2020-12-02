@@ -2,14 +2,14 @@
 using RestApi.Models;
 using RestApi.Models.Cars;
 
-namespace RestApi.Repositories
+namespace RestApi.Persistence
 {
     public class AppDbContext : DbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) {}
         
-        public DbSet<Car> Cars { get; set; }
-        public DbSet<Inspection> Inspections { get; set; }
+        public virtual DbSet<Car> Cars { get; set; }
+        public virtual DbSet<Inspection> Inspections { get; set; }
 
     }
 }

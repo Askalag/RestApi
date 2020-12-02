@@ -12,7 +12,10 @@ namespace RestApi.Models
         public int Id { get; set; }
         public string Description { get; set; }
         public DateTime Created { get; set; }
-        
+        public BaseState State { get; set; }
+
         public Car Car { get; set; }
+        
+        public Inspection() {}
     }
 }

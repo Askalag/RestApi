@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace RestApi.Repositories
+namespace RestApi.Persistence.Repositories
 {
     public interface IRepository<TEntity> where TEntity : class
     {
@@ -16,5 +16,7 @@ namespace RestApi.Repositories
 
         void Remove(TEntity entity);
         void RemoveRange(IEnumerable<TEntity> entities);
+
+        void SaveChanges();
     }
 }

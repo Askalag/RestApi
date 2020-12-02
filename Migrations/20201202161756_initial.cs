@@ -3,12 +3,28 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RestApi.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
                 name: "is01");
+
+            migrationBuilder.CreateTable(
+                name: "Models",
+                schema: "is01",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    State = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Models", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "Cars",
@@ -18,13 +34,21 @@ namespace RestApi.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Mark = table.Column<int>(type: "int", nullable: false),
-                    Model = table.Column<int>(type: "int", nullable: false),
+                    ModelId = table.Column<int>(type: "int", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    State = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Cars", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Cars_Models_ModelId",
+                        column: x => x.ModelId,
+                        principalSchema: "is01",
+                        principalTable: "Models",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -36,6 +60,7 @@ namespace RestApi.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    State = table.Column<int>(type: "int", nullable: false),
                     CarId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -49,6 +74,12 @@ namespace RestApi.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Cars_ModelId",
+                schema: "is01",
+                table: "Cars",
+                column: "ModelId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Inspections_CarId",
@@ -65,6 +96,10 @@ namespace RestApi.Migrations
 
             migrationBuilder.DropTable(
                 name: "Cars",
+                schema: "is01");
+
+            migrationBuilder.DropTable(
+                name: "Models",
                 schema: "is01");
         }
     }
