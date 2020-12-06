@@ -37,9 +37,10 @@ namespace RestApi
                 options.UseSqlServer(Configuration.GetConnectionString("devDb1"));
             });
 
-            services.AddSingleton<ICarService, CarService>();
-
+            services.AddScoped<ICarService, CarService>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ICarRepository, CarRepository>();
+            services.AddScoped<IModelRepository, ModelRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

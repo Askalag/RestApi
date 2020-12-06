@@ -10,6 +10,5 @@ namespace RestApi.Persistence
         
         public virtual DbSet<Car> Cars { get; set; }
         public virtual DbSet<Inspection> Inspections { get; set; }
-
     }
 }

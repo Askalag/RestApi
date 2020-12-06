@@ -14,11 +14,11 @@ namespace RestApi.Controllers
     [Route("api")]
     public class MainController : ControllerBase
     {
-        private readonly ICarRepository _carRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public MainController(ICarRepository carRepository)
+        public MainController(IUnitOfWork unitOfWork)
         {
-            _carRepository = carRepository;
+            _unitOfWork = unitOfWork;
         }
         
         [HttpGet("hello")]
@@ -26,6 +26,30 @@ namespace RestApi.Controllers
         {
             var res = await Task.Run(() => "Hi! I'm working");
             return Ok(res);
+        }
+        
+        [HttpGet("cars")]
+        public async Task<IActionResult> Cars()
+        {
+            var res = await Task.Run(() => _unitOfWork.CarRepository.GetAll());
+            return Ok(res);
+        }
+        
+        [HttpGet("carsWithModels")]
+        public async Task<IActionResult> CarsWithModels()
+        {
+            var cars = await Task.Run(() => _unitOfWork.CarRepository.GetAll(car => true, null, car => car.Model));
+            return Ok(cars);
+        }
+
+        [HttpPost("addCar")]
+        public async Task<IActionResult> AddCar([FromBody] Car car)
+        {
+            Console.Write("test");
+            _unitOfWork.CarRepository.Add(car);
+            _unitOfWork.CarRepository.SaveChanges();
+            await Task.CompletedTask;
+            return Ok("ok");
         }
         
         [HttpGet("test")]
@@ -43,18 +67,9 @@ namespace RestApi.Controllers
             car.State = BaseState.Create;
             car.Inspections = new List<Inspection>();
             
-            
-            
-            _carRepository.Add(car);
-            _carRepository.SaveChanges();
-            var res = await Task.Run(() => _carRepository.GetAll());
-            return Ok(res);
-        }
-        
-        [HttpGet("cars")]
-        public async Task<IActionResult> Cars()
-        {
-            var res = await Task.Run(() => _carRepository.GetAll());
+            _unitOfWork.CarRepository.Add(car);
+            _unitOfWork.CarRepository.SaveChanges();
+            var res = await Task.Run(() => _unitOfWork.CarRepository.GetAll());
             return Ok(res);
         }
     }
