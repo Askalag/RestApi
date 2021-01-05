@@ -10,8 +10,8 @@ using RestApi.Persistence;
 namespace RestApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20201202161756_initial")]
-    partial class initial
+    [Migration("20210105164208_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -59,6 +59,9 @@ namespace RestApi.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Mark")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
